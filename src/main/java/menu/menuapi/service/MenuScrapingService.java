@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import menu.menuapi.DTO.MenuItemDTO;
 
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class MenuScrapingService {
@@ -53,13 +55,22 @@ public class MenuScrapingService {
 
     public void scrapeMenuDataForUpcomingWeek(String menuPeriodName) {
         LocalDate currentDate = LocalDate.now();
-        LocalDate endDate = currentDate.plusDays(6); // Get the date for the end of the week
+        LocalDate endDate = currentDate.plusDays(6);
 
-        while (!currentDate.isAfter(endDate)) { // Loop until currentDate is after endDate
-            scrapeAndSaveMenuData(menuPeriodName, currentDate);
-            currentDate = currentDate.plusDays(1); // Move to the next day
+        // Use parallel stream to scrape data for multiple days concurrently
+        List<LocalDate> dates = new ArrayList<>();
+        while (!currentDate.isAfter(endDate)) {
+            dates.add(currentDate);
+            currentDate = currentDate.plusDays(1);
         }
+
+        // Leverage parallelism
+        dates.parallelStream().forEach(date -> scrapeAndSaveMenuData(menuPeriodName, date));
     }
+
+    private Map<String, MealPeriod> mealPeriodCache = new ConcurrentHashMap<>();
+    private Map<String, Restaurant> restaurantCache = new ConcurrentHashMap<>();
+    private Map<String, Section> sectionCache = new ConcurrentHashMap<>();
 
     public void scrapeAndSaveMenuData(String menuPeriodName, LocalDate date) {
         try {
@@ -80,34 +91,30 @@ public class MenuScrapingService {
 
             mealPeriodRepository.save(mealPeriod);
 
+            List<MenuItem> menuItemsToSave = new ArrayList<>();
+            List<MenuItemInfo> menuItemInfosToSave = new ArrayList<>();
+
             // Extract restaurants and menu items
             Elements restaurantElements = doc.select("h3.col-header");
             for (Element restaurantElement : restaurantElements) {
                 String restaurantName = restaurantElement.text().trim();
 
                 // Check if the restaurant already exists in the database
-                Restaurant existingRestaurant = restaurantRepository.findByRestaurantName(restaurantName);
-                Restaurant restaurant;
-                if (existingRestaurant != null) {
-                    restaurant = existingRestaurant; // Use existing restaurant
-                } else {
-                    restaurant = new Restaurant(restaurantName); // Create new restaurant
-                }
-
-                restaurantRepository.save(restaurant);
+                Restaurant restaurant = restaurantCache.computeIfAbsent(restaurantName, k -> {
+                    Restaurant newRestaurant = new Restaurant(k);
+                    restaurantRepository.save(newRestaurant);
+                    return newRestaurant;
+                });
 
                 Elements sectionElements = restaurantElement.parent().select("li.sect-item");
                 for(Element sectionElement : sectionElements) {
                     String sectionName = sectionElement.ownText().trim();
-                    Section existingSection = sectionRepository.findByName(sectionName);
-                    Section section;
-                    if (existingSection != null) {
-                        section = existingSection; // Use existing section
-                    } else {
-                        section = new Section(sectionName); // Create new section
-                    }
-                    sectionRepository.save(section);
-
+                    // Retrieve from cache or create a new instance
+                    Section section = sectionCache.computeIfAbsent(sectionName, k -> {
+                        Section newSection = new Section(k);
+                        sectionRepository.save(newSection);
+                        return newSection;
+                    });
                     // Select all a.recipelink elements within the same parent container as the restaurant element
                     Elements menuItemElements = sectionElement.select("span.tooltip-target-wrapper");
                     for (Element menuItemElement : menuItemElements) {
@@ -135,6 +142,21 @@ public class MenuScrapingService {
 
                         // Save MenuItemDTO
                         saveMenuItemDTO(menuItemDTO, healthRestrictions);
+                        if (shouldSkipMenuItem(menuItemDTO)) {
+                            continue;
+                        }
+
+                        MenuItem menuItem = menuItemRepository.findByItemName(menuItemDTO.getItemName());
+                        if (menuItem == null) {
+                            menuItem = new MenuItem(menuItemDTO.getItemName(), restaurant);
+                            menuItem.setNutritionalLink(menuItemDTO.getNutritionalLink());
+                            menuItem.setHealthRestrictions(buildListOfHealthRestrictions(healthRestrictions));
+                            menuItem.setSection(section);
+                            menuItemsToSave.add(menuItem);
+                        }
+
+                        MenuItemInfo menuItemInfo = new MenuItemInfo(menuItem, mealPeriod, menuItemDTO.getDate());
+                        menuItemInfosToSave.add(menuItemInfo);
                     }
                 }
             }
@@ -158,9 +180,24 @@ public class MenuScrapingService {
                     themeInfoRepository.save(themeInfo);
                 }
             }
+
+            menuItemRepository.saveAll(menuItemsToSave);
+            menuItemInfoRepository.saveAll(menuItemInfosToSave);
+            menuItemRepository.flush();
+            menuItemInfoRepository.flush();
+
         } catch (IOException e) {
             System.err.println("Error scraping menu data for " + menuPeriodName + " " + date + ": " + e.getMessage());
         }
+    }
+
+    private boolean shouldSkipMenuItem(MenuItemDTO menuItemDTO) {
+        // Check if the MenuItem already exists in the database
+        MenuItem menuItem = menuItemRepository.findByItemName(menuItemDTO.getItemName());
+        if (menuItem != null) {
+            return true; // Skip if the menu item exists
+        }
+        return false;
     }
 
     private void saveMenuItemDTO(MenuItemDTO menuItemDTO, List<String> healthRestrictions) {
@@ -189,6 +226,7 @@ public class MenuScrapingService {
             menuItemInfoRepository.save(menuItemInfo);
         }
     }
+
 
     private String buildMenuUrl(LocalDate date, String menuPeriodName) {
         // Format the date in the required format for the URL
