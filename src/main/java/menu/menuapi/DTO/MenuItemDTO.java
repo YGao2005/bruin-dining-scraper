@@ -1,9 +1,11 @@
 package menu.menuapi.DTO;
 
+import menu.menuapi.model.HealthRestriction;
 import menu.menuapi.model.MenuItem;
 import menu.menuapi.model.MenuItemInfo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class MenuItemDTO {
     private Long id;
@@ -12,7 +14,10 @@ public class MenuItemDTO {
     private String mealPeriodName;
     private String restaurantName;
 
+    private String sectionName;
     private LocalDate date;
+
+    private List<HealthRestriction> healthRestrictions;
 
     public MenuItemDTO() {
     }
@@ -25,6 +30,8 @@ public class MenuItemDTO {
         // Set default or null values for mealPeriodName, restaurantName, and date
         this.mealPeriodName = null;
         this.date = null;
+        this.healthRestrictions = menuItem.getHealthRestrictions();
+        this.sectionName = menuItem.getSection().getName();
     }
 
 
@@ -36,6 +43,8 @@ public class MenuItemDTO {
 
         this.mealPeriodName = menuItemInfo.getMealPeriod().getName();
         this.date = menuItemInfo.getDate();
+        this.healthRestrictions = menuItem.getHealthRestrictions();
+        this.sectionName = menuItem.getSection().getName();
     }
 
     // Getters and setters for all fields
@@ -86,5 +95,21 @@ public class MenuItemDTO {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setHealthRestrictions(List<HealthRestriction> healthRestrictions) {
+        this.healthRestrictions = healthRestrictions;
+    }
+
+    public List<HealthRestriction> getHealthRestrictions() {
+        return healthRestrictions;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
+
+    public String getSectionName() {
+        return sectionName;
     }
 }

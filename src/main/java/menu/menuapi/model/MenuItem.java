@@ -15,12 +15,23 @@ public class MenuItem {
     // Nutritional information
     private String nutritionalLink;
 
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section;
 
     @ManyToOne
     private Restaurant restaurant;
 
     @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL)
     private List<MenuItemInfo> menuItemInfoList;
+
+    @ManyToMany
+    @JoinTable(
+            name = "menu_item_health_restrictions",
+            joinColumns = @JoinColumn(name = "menu_item_id"),
+            inverseJoinColumns = @JoinColumn(name = "health_restriction_id")
+    )
+    private List<HealthRestriction> healthRestrictions;
 
     public MenuItem() {
     }
@@ -57,4 +68,21 @@ public class MenuItem {
     public List<MenuItemInfo> getMenuItemInfoList() {
         return menuItemInfoList;
     }
+
+    public List<HealthRestriction> getHealthRestrictions() {
+        return healthRestrictions;
+    }
+
+    public void setHealthRestrictions(List<HealthRestriction> healthRestrictions) {
+        this.healthRestrictions = healthRestrictions;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
 }
