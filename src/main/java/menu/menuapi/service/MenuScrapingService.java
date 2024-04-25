@@ -109,7 +109,7 @@ public class MenuScrapingService {
                     sectionRepository.save(section);
 
                     // Select all a.recipelink elements within the same parent container as the restaurant element
-                    Elements menuItemElements = sectionElement.parent().select("span.tooltip-target-wrapper");
+                    Elements menuItemElements = sectionElement.select("span.tooltip-target-wrapper");
                     for (Element menuItemElement : menuItemElements) {
                         Element anchorElement = menuItemElement.selectFirst("a.recipelink");
                         String itemName = anchorElement.text().trim();
@@ -176,10 +176,18 @@ public class MenuScrapingService {
             menuItemRepository.save(menuItem);
         }
 
-        // Create a new MenuItemInfo
-        MenuItemInfo menuItemInfo = new MenuItemInfo(menuItem, mealPeriodRepository.findByPeriodName(menuItemDTO.getMealPeriodName()), menuItemDTO.getDate());
-        // Save MenuItemInfo
-        menuItemInfoRepository.save(menuItemInfo);
+        MenuItemInfo existingMenuItemInfo = menuItemInfoRepository.findByMenuItemAndMealPeriodAndDate(
+                menuItem,
+                mealPeriodRepository.findByPeriodName(menuItemDTO.getMealPeriodName()),
+                menuItemDTO.getDate()
+        );
+
+        if (existingMenuItemInfo == null) {
+            // If not, create a new MenuItemInfo
+            MenuItemInfo menuItemInfo = new MenuItemInfo(menuItem, mealPeriodRepository.findByPeriodName(menuItemDTO.getMealPeriodName()), menuItemDTO.getDate());
+            // Save MenuItemInfo
+            menuItemInfoRepository.save(menuItemInfo);
+        }
     }
 
     private String buildMenuUrl(LocalDate date, String menuPeriodName) {
