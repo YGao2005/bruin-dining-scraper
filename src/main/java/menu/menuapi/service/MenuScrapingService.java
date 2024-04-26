@@ -162,8 +162,12 @@ public class MenuScrapingService {
                         themeRepository.save(menuTheme);
                     }
 
-                    ThemeInfo themeInfo = new ThemeInfo(menuTheme, mealPeriod, date);
-                    themeInfoRepository.save(themeInfo);
+
+                    ThemeInfo themeInfo = themeInfoRepository.findByDateAndMealPeriod(date, mealPeriod);
+                    if(themeInfo == null){
+                        new ThemeInfo(menuTheme, mealPeriod, date);
+                        themeInfoRepository.save(themeInfo);
+                    }
                 }
             }
         } catch (IOException e) {
