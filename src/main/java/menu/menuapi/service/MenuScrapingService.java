@@ -165,7 +165,7 @@ public class MenuScrapingService {
 
                     ThemeInfo themeInfo = themeInfoRepository.findByDateAndMealPeriod(date, mealPeriod);
                     if(themeInfo == null){
-                        new ThemeInfo(menuTheme, mealPeriod, date);
+                        themeInfo = new ThemeInfo(menuTheme, mealPeriod, date);
                         themeInfoRepository.save(themeInfo);
                     }
                 }
