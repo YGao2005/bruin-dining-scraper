@@ -1,6 +1,8 @@
-package menu.menuapi.model;
+package menu.menuapi.DTO;
 
 import menu.menuapi.DTO.MenuItemDTO;
+import menu.menuapi.model.HealthRestriction;
+import menu.menuapi.model.MenuItem;
 import menu.menuapi.repository.HealthRestrictionRepository;
 
 import java.util.ArrayList;

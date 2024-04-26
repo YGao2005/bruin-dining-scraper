@@ -1,9 +1,9 @@
 package menu.menuapi.controller;
 
-import menu.menuapi.model.MenuItemSearchDTO;
-import menu.menuapi.model.Theme;
-import org.springframework.web.bind.annotation.*;
 import menu.menuapi.DTO.MenuItemDTO;
+import menu.menuapi.model.MenuItem;
+import menu.menuapi.DTO.MenuItemSearchDTO;
+import org.springframework.web.bind.annotation.*;
 import menu.menuapi.service.MenuScrapingService;
 import menu.menuapi.service.MenuSearchService;
 import menu.menuapi.service.MenuService;
@@ -50,5 +50,15 @@ public class MenuController {
     @GetMapping("/gettheme")
     public String getTheme(@RequestParam LocalDate date, @RequestParam String mealPeriod) {
         return menuSearchService.getThemeFromDateAndMealPeriod(date, mealPeriod);
+    }
+
+    @GetMapping("/getallitemsbyid")
+    public List<MenuItemDTO> getMenuItemById(@RequestParam Long id) {
+        return menuSearchService.getMenuItemById(id);
+    }
+
+    @GetMapping("/getallitemsbyname")
+    public List<MenuItemDTO> getMenuItemByName(@RequestParam String name) {
+        return menuSearchService.getMenuItemByName(name);
     }
 }
