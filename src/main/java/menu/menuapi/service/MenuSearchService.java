@@ -1,11 +1,16 @@
 package menu.menuapi.service;
 
+import menu.menuapi.model.Theme;
+import menu.menuapi.model.ThemeInfo;
+import menu.menuapi.repository.MealPeriodRepository;
 import menu.menuapi.repository.MenuItemRepository;
+import menu.menuapi.repository.ThemeInfoRepository;
 import org.springframework.stereotype.Service;
 import menu.menuapi.DTO.MenuItemDTO;
 import menu.menuapi.model.MenuItem;
 import menu.menuapi.model.MenuItemInfo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +19,20 @@ public class MenuSearchService {
 
     private final MenuItemRepository menuItemRepository;
 
-    public MenuSearchService(MenuItemRepository menuItemRepository) {
+    private final ThemeInfoRepository themeInfoRepository;
+
+    private final MealPeriodRepository mealPeriodRepository;
+    public MenuSearchService(MenuItemRepository menuItemRepository,
+                             ThemeInfoRepository themeInfoRepository,
+                             MealPeriodRepository mealPeriodRepository) {
         this.menuItemRepository = menuItemRepository;
+        this.themeInfoRepository = themeInfoRepository;
+        this.mealPeriodRepository = mealPeriodRepository;
     }
 
     public List<MenuItemDTO> searchMenuItems(String query) {
-        if (query.length() <= 2) {
-            throw new IllegalArgumentException("Query length must be greater than 2 characters.");
+        if (query.length() <= 3) {
+            throw new IllegalArgumentException("Query length must be greater than 3 characters.");
         }
 
         List<MenuItem> menuItems = menuItemRepository.findAllByItemNameContainingIgnoreCase(query);
@@ -40,5 +52,14 @@ public class MenuSearchService {
         }
 
         return menuItemDTOs;
+    }
+
+    public String getThemeFromDateAndMealPeriod(LocalDate date, String mealPeriodName) {
+        ThemeInfo themeInfo = themeInfoRepository.findByDateAndMealPeriod(date, mealPeriodRepository.findByPeriodName(mealPeriodName));
+        if (themeInfo != null) {
+            return themeInfo.getTheme().getThemeName();
+        } else {
+            return null; // Theme not found for the given date and meal period
+        }
     }
 }
