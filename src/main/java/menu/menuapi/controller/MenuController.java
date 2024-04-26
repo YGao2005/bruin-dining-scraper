@@ -27,9 +27,9 @@ public class MenuController {
     // Add a new endpoint to scrape menu data
     @PostMapping("/scrape")
     public void scrapeMenuData() {
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Breakfast");
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Lunch");
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Dinner");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Breakfast");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Lunch");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Dinner");
     }
 
     // Add a new endpoint to get all menu item names

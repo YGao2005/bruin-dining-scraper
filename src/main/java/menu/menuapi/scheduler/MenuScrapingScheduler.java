@@ -15,8 +15,8 @@ public class MenuScrapingScheduler {
 
     @Scheduled(cron = "0 0 0 * * *") // At midnight every day
     public void scrapeMenuDataPeriodically() {
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Breakfast");
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Lunch");
-        menuScrapingService.scrapeMenuDataForUpcomingWeek("Dinner");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Breakfast");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Lunch");
+        menuScrapingService.scrapeMenuDataForUpcomingWeekAsync("Dinner");
     }
 }
