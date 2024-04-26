@@ -3,6 +3,7 @@ package menu.menuapi.model;
 import menu.menuapi.DTO.MenuItemDTO;
 import menu.menuapi.repository.HealthRestrictionRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItemSearchDTO {
@@ -10,7 +11,7 @@ public class MenuItemSearchDTO {
     private String menuItemName;
     private String restaurantName;
 
-    private List<String> healthRestrictions;
+    private List<String> healthRestrictions = new ArrayList<>();
     public MenuItemSearchDTO(MenuItem menuItem) {
         this.menuItemName = menuItem.getItemName();
         this.restaurantName = menuItem.getRestaurant().getName();
