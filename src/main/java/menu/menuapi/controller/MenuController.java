@@ -1,5 +1,6 @@
 package menu.menuapi.controller;
 
+import menu.menuapi.model.MenuItemSearchDTO;
 import menu.menuapi.model.Theme;
 import org.springframework.web.bind.annotation.*;
 import menu.menuapi.DTO.MenuItemDTO;
@@ -41,8 +42,8 @@ public class MenuController {
     }
 
     @GetMapping("/search")
-    public List<MenuItemDTO> searchMenu(@RequestParam String query) {
-        List<MenuItemDTO> menuItems = menuSearchService.searchMenuItems(query);
+    public List<MenuItemSearchDTO> searchMenu(@RequestParam String query) {
+        List<MenuItemSearchDTO> menuItems = menuSearchService.searchMenuItems(query);
         return menuItems;
     }
 

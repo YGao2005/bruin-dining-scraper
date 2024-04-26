@@ -1,14 +1,11 @@
 package menu.menuapi.service;
 
-import menu.menuapi.model.Theme;
-import menu.menuapi.model.ThemeInfo;
+import menu.menuapi.model.*;
 import menu.menuapi.repository.MealPeriodRepository;
 import menu.menuapi.repository.MenuItemRepository;
 import menu.menuapi.repository.ThemeInfoRepository;
 import org.springframework.stereotype.Service;
 import menu.menuapi.DTO.MenuItemDTO;
-import menu.menuapi.model.MenuItem;
-import menu.menuapi.model.MenuItemInfo;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +27,19 @@ public class MenuSearchService {
         this.mealPeriodRepository = mealPeriodRepository;
     }
 
+    public List<MenuItemSearchDTO> searchMenuItems(String query){
+        if (query.length() <= 3) {
+            throw new IllegalArgumentException("Query length must be greater than 3 characters.");
+        }
+        List<MenuItemSearchDTO> menuItemSearchDTOs = new ArrayList<>();
+        List<MenuItem> menuItems = menuItemRepository.findAllByItemNameContainingIgnoreCase(query);
+        for (MenuItem menuItem : menuItems) {
+            menuItemSearchDTOs.add(new MenuItemSearchDTO(menuItem));
+        }
+        return menuItemSearchDTOs;
+    }
+
+    /*
     public List<MenuItemDTO> searchMenuItems(String query) {
         if (query.length() <= 3) {
             throw new IllegalArgumentException("Query length must be greater than 3 characters.");
@@ -53,7 +63,7 @@ public class MenuSearchService {
 
         return menuItemDTOs;
     }
-
+*/
     public String getThemeFromDateAndMealPeriod(LocalDate date, String mealPeriodName) {
         ThemeInfo themeInfo = themeInfoRepository.findByDateAndMealPeriod(date, mealPeriodRepository.findByPeriodName(mealPeriodName));
         if (themeInfo != null) {

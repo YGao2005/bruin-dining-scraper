@@ -25,7 +25,7 @@ public class MenuItem {
     @OneToMany(mappedBy = "menuItem", cascade = CascadeType.ALL)
     private List<MenuItemInfo> menuItemInfoList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "menu_item_health_restrictions",
             joinColumns = @JoinColumn(name = "menu_item_id"),
@@ -36,9 +36,10 @@ public class MenuItem {
     public MenuItem() {
     }
 
-    public MenuItem(String itemName, Restaurant restaurant) {
+    public MenuItem(String itemName, Restaurant restaurant, List<HealthRestriction> healthRestrictions) {
         this.itemName = itemName;
         this.restaurant = restaurant;
+        this.healthRestrictions = healthRestrictions;
     }
 
     // Getters and setters for itemName, mealPeriod, and restaurant

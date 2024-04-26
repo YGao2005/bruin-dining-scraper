@@ -173,9 +173,9 @@ public class MenuScrapingService {
         MenuItem menuItem = menuItemRepository.findByItemName(menuItemDTO.getItemName());
         if (menuItem == null) {
             // If not, create a new MenuItem
-            menuItem = new MenuItem(menuItemDTO.getItemName(), restaurantRepository.findByRestaurantName(menuItemDTO.getRestaurantName()));
+            menuItem = new MenuItem(menuItemDTO.getItemName(), restaurantRepository.findByRestaurantName(menuItemDTO.getRestaurantName()), buildListOfHealthRestrictions(healthRestrictions));
             menuItem.setNutritionalLink(menuItemDTO.getNutritionalLink());
-            menuItem.setHealthRestrictions(buildListOfHealthRestrictions(healthRestrictions));
+            //menuItem.setHealthRestrictions(buildListOfHealthRestrictions(healthRestrictions));
             menuItem.setSection(sectionRepository.findByName(menuItemDTO.getSectionName()));
             // Save MenuItem
             menuItemRepository.save(menuItem);
