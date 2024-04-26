@@ -103,6 +103,9 @@ public class MenuScrapingService {
 
                 Elements sectionElements = restaurantElement.parent().select("li.sect-item");
                 for(Element sectionElement : sectionElements) {
+                    if (!sectionElement.text().contains("Theme of the Day")) {
+                        continue;
+                    }
                     String sectionName = sectionElement.ownText().trim();
                     Section existingSection = sectionRepository.findByName(sectionName);
                     Section section;
