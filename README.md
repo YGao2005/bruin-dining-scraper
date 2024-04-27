@@ -189,7 +189,7 @@ Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/
             "V",
             "AMLK"
         ]
-    }
+}
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
