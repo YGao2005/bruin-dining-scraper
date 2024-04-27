@@ -17,8 +17,6 @@
   <h3 align="center">Bruin Dining Scraper API</h3>
   <p align="center">
     An API designed for the Bruin Dining app that scrapes data from UCLA menus
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
   </p>
 </div>
 
@@ -43,6 +41,12 @@
         <li>
            <a href="#getting-all-menu-items-by-id"# >Getting all menu items by ID </a> 
         </li>
+        <li>
+           <a href="#getting-theme"# >Getting Theme </a> 
+        </li>
+        <li>
+           <a href="#autosuggestion-and-search-helper"# >Autosuggestion and Search Helper </a> 
+        </li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -54,6 +58,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
+API Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com`
 
 The purpose of this API is to provide a convenient and efficient way for users to access and interact with dining hall menu information from UCLA. The data collected by the API aims to allow Bruin Dining to create a more user-friendly and accessible experience. 
 
@@ -163,6 +169,8 @@ Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/
 ```
 LA Street Food
 ```
+
+### Autosuggestion and Search Helper
 
 Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?query={QUERY}`
 
