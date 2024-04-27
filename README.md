@@ -35,9 +35,16 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#usage">Usage</a>
+      <ul> 
+        <li>
+           <a href="#getting-all-menu-items-by-name"# >Getting all menu items by name </a> 
+        </li>
+        <li>
+           <a href="#getting-all-menu-items-by-id"# >Getting all menu items by ID </a> 
+        </li>
+      </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -62,59 +69,121 @@ Some key features:
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+I coded the API in Java using a Spring Boot framework and stored the data in a MySQL databased hosted on Aiven. I hosted the API using Heroku. 
 
 * [![Java][Java-img]][Java-url]
+* [![Spring][Spring-img]][Spring-url]
 * [![MySQL][MySQL-img]][MySQL-url]
 * [![Heroku][Heroku-img]][Heroku-url]
-* [![Spring][Spring-img]][Spring-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Here are all the usable API routes and their function. 
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+
+
+### Getting all menu item by name
+
+Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getallitemsbyname?name={NAME}`
+
+Replace `{NAME}` with the name of the menu item you would like to search for.
+
+This call will return a list of menu items in a json format (see below) that specifies: 
+1. Menu item ID
+2. Item name
+3. Link to the nutritional page
+4. One instance of a meal period when it is offered
+5. The restaurant the item is offered at
+6. One instance of a date where the menu item is offered
+7. A list of the health restrictions of the item
+
+Example of returned json with route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getitembyname?name=Cheese Pizza`
+
+```
+   {
+        "id": 936,
+        "itemName": "Cheese Pizza",
+        "nutritionalLink": "https://menu.dining.ucla.edu/Recipes/400082/1!10",
+        "mealPeriodName": "Lunch",
+        "restaurantName": "De Neve",
+        "sectionName": "The Pizzeria",
+        "date": "2024-04-27",
+        "healthRestrictions": [
+            {
+                "id": 1,
+                "name": "AWHT"
+            },
+            {
+                "id": 2,
+                "name": "AGTN"
+            },
+            {
+                "id": 6,
+                "name": "V"
+            },
+            {
+                "id": 8,
+                "name": "AMLK"
+            }
+        ]
+    }
+   ```
+
+### Getting all menu items by ID
+
+Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getallitemsbyid?id={ID}`
+
+Replace `{ID}` with the ID of the menu item that you would like to search for. 
+
+This call will return a list of menu items in a json format (see below) that specifies: 
+1. Menu item ID
+2. Item name
+3. Link to the nutritional page
+4. One instance of a meal period when it is offered
+5. The restaurant the item is offered at
+6. One instance of a date where the menu item is offered
+7. A list of the health restrictions of the item
+
+Example usage to produce the same json output as above: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getallitemsbyid?id=812`
+
+### Getting theme
+
+Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/gettheme?date={DATE}&mealPeriod={MEALPERIOD}`
+
+Replace `{DATE}` with the format of YYYY-MM-DD and {MEALPERIOD} with either "Breakfast", "Lunch", or "Dinner".
+
+This call will return the De Neve theme of that specific lunch and meal period, or nothing otherwise. 
+
+Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/gettheme?date=2024-04-26&mealPeriod=Lunch`
+```
+LA Street Food
+```
+
+Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?query={QUERY}`
+
+Replace `{QUERY}` with the search query.
+
+This call will return all menu items that contain the query inside of their name. The search feature is case insensitive.  
+
+Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?query=cheese`
+
+```
+{
+        "menuItemName": "Three Cheese & Tomato Pizza",
+        "restaurantName": "De Neve",
+        "healthRestrictions": [
+            "AWHT",
+            "AGTN",
+            "V",
+            "AMLK"
+        ]
+    }
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -137,57 +206,12 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- CONTACT -->
 ## Contact
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
