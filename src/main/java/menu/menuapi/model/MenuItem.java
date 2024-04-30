@@ -2,6 +2,8 @@ package menu.menuapi.model;
 
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -84,6 +86,14 @@ public class MenuItem {
 
     public void setSection(Section section) {
         this.section = section;
+    }
+
+    public List<String> getHealthRestrictionNames() {
+        List<String> healthRestrictionNames = new ArrayList<>();
+        for(HealthRestriction healthRestriction : healthRestrictions) {
+            healthRestrictionNames.add(healthRestriction.getName());
+        }
+        return healthRestrictionNames;
     }
 
 }

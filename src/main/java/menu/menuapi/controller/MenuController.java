@@ -1,6 +1,7 @@
 package menu.menuapi.controller;
 
 import menu.menuapi.DTO.MenuItemDTO;
+import menu.menuapi.DTO.RestaurantMenuFormatDTO;
 import menu.menuapi.model.MenuItem;
 import menu.menuapi.DTO.MenuItemSearchDTO;
 import org.springframework.web.bind.annotation.*;
@@ -61,4 +62,10 @@ public class MenuController {
     public List<MenuItemDTO> getMenuItemByName(@RequestParam String name) {
         return menuSearchService.getMenuItemByName(name);
     }
+
+    @GetMapping("/getmenuformatsbydateandmealperiod")
+    public List<RestaurantMenuFormatDTO> getMenuFormatsByDate(@RequestParam LocalDate date, @RequestParam String mealPeriod) {
+        return menuSearchService.getMenuFormatsByDateAndMealPeriod(date, mealPeriod);
+    }
 }
+

@@ -13,4 +13,6 @@ public interface MenuItemInfoRepository extends JpaRepository<MenuItemInfo, Long
     MenuItemInfo findByMenuItemAndMealPeriodAndDate(MenuItem menuItem, MealPeriod byPeriodName, LocalDate date);
 
     List<MenuItemInfo> findAllByMenuItem(MenuItem menuItem);
+
+    List<MenuItemInfo> findAllByDateAndMealPeriod(LocalDate date, MealPeriod mealPeriod);
 }

@@ -2,6 +2,7 @@ package menu.menuapi.service;
 
 import menu.menuapi.DTO.MenuItemDTO;
 import menu.menuapi.DTO.MenuItemSearchDTO;
+import menu.menuapi.DTO.RestaurantMenuFormatDTO;
 import menu.menuapi.exception.MenuItemNotFoundException;
 import menu.menuapi.model.*;
 import menu.menuapi.repository.MealPeriodRepository;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MenuSearchService {
@@ -78,4 +81,38 @@ public class MenuSearchService {
         return menuItemDTOs;
     }
 
+    public List<RestaurantMenuFormatDTO> getMenuFormatsByDateAndMealPeriod(LocalDate date, String mealPeriodName) {
+        List<RestaurantMenuFormatDTO> restaurantMenuFormatDTOs = new ArrayList<>();
+
+        RestaurantMenuFormatDTO deNeveMenu = new RestaurantMenuFormatDTO("De Neve", mealPeriodName);
+        RestaurantMenuFormatDTO bPlateMenu = new RestaurantMenuFormatDTO("Bruin Plate", mealPeriodName);
+        RestaurantMenuFormatDTO epicuriaMenu = new RestaurantMenuFormatDTO("Epicuria", mealPeriodName);
+
+        MealPeriod mealPeriod = mealPeriodRepository.findByPeriodName(mealPeriodName);
+        List<MenuItemInfo> menuItems = menuItemInfoRepository.findAllByDateAndMealPeriod(date, mealPeriod);
+        for (MenuItemInfo menuItemInfo : menuItems) {
+            String restaurantName = menuItemInfo.getMenuItem().getRestaurant().getName();
+            String sectionName = menuItemInfo.getMenuItem().getSection().getName();
+            String menuItemName = menuItemInfo.getMenuItem().getItemName();
+            List<String> healthRestrictions = menuItemInfo.getMenuItem().getHealthRestrictionNames();
+
+            switch(restaurantName) {
+                case "De Neve":
+                    deNeveMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    break;
+                case "Bruin Plate":
+                    bPlateMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    break;
+                case "Epicuria":
+                    epicuriaMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    break;
+            }
+        }
+
+        restaurantMenuFormatDTOs.add(deNeveMenu);
+        restaurantMenuFormatDTOs.add(bPlateMenu);
+        restaurantMenuFormatDTOs.add(epicuriaMenu);
+
+        return restaurantMenuFormatDTOs;
+    }
 }
