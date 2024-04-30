@@ -49,6 +49,9 @@
         </li>
       </ul>
     </li>
+    <li>
+           <a href="#Roadmap"# >Roadmap </a> 
+    </li>
     <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
@@ -175,7 +178,7 @@ Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?q
 
 Replace `{QUERY}` with the search query.
 
-This call will return all menu items that contain the query inside of their name. The search feature is case insensitive.  
+This call will return all menu items containing the query inside their name. This includes the menu item name, restaurant name, menu item id, and list of health restrictions as depicted below. The search feature is case-insensitive.  
 
 Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?query=cheese`
 
@@ -183,6 +186,7 @@ Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/
 {
         "menuItemName": "Three Cheese & Tomato Pizza",
         "restaurantName": "De Neve",
+        "menuItemId": 1745,
         "healthRestrictions": [
             "AWHT",
             "AGTN",
@@ -191,6 +195,16 @@ Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/
         ]
 }
 ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Roadmap
+
+- [x] Add Changelog
+- [x] Fixed bug that prevents dinner menu from being scraped
+- [x] Search function now also returns menu item ID  
+- [ ] Fix scheduler so menus can be scraped daily
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
