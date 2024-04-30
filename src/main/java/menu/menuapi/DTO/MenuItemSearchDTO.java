@@ -13,10 +13,13 @@ public class MenuItemSearchDTO {
     private String menuItemName;
     private String restaurantName;
 
+    private long menuItemId;
+
     private List<String> healthRestrictions = new ArrayList<>();
     public MenuItemSearchDTO(MenuItem menuItem) {
         this.menuItemName = menuItem.getItemName();
         this.restaurantName = menuItem.getRestaurant().getName();
+        this.menuItemId = menuItem.getId();
         for(HealthRestriction healthRestriction : menuItem.getHealthRestrictions()) {
             this.healthRestrictions.add(healthRestriction.getName());
         }
@@ -44,5 +47,13 @@ public class MenuItemSearchDTO {
 
     public void setHealthRestrictions(List<String> healthRestrictions) {
         this.healthRestrictions = healthRestrictions;
+    }
+
+    public long getMenuItemId() {
+        return menuItemId;
+    }
+
+    public void setMenuItemId(long menuItemId) {
+        this.menuItemId = menuItemId;
     }
 }
