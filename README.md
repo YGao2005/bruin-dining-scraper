@@ -47,6 +47,9 @@
         <li>
            <a href="#autosuggestion-and-search-helper"# >Autosuggestion and Search Helper </a> 
         </li>
+        <li>
+          <a href="#get-menu-formats-by-date-and-meal-period"# >Get Menu Formats By Date and Meal Period</a>
+        </li>
       </ul>
     </li>
     <li>
@@ -194,6 +197,68 @@ Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/
             "AMLK"
         ]
 }
+```
+
+### Get Menu Formats By Date and Meal Period
+
+Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getmenuformatsbydateandmealperiod?date={DATE}&mealPeriod={MEALPERIOD}`
+
+Replace `{DATE}` with the format of YYYY-MM-DD and {MEALPERIOD} with either "Breakfast", "Lunch", or "Dinner".
+
+Returns the formatted menus of Bruin Plate, De Neve, and Epicuria. 
+
+Formats in this structure (for 3 restaurants):
+
+```
+[
+  {
+    Restaurant,
+    menuSections:
+    {
+      MenuSection1:
+        {
+          MenuItem:
+            {
+              MenuItemName,
+              HealthRestrictionsList
+            }
+        }
+    }
+  }
+]
+```
+
+Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getmenuformatsbydateandmealperiod?date=2024-04-29&mealPeriod=Dinner`
+
+Example of a section of the returned JSON: 
+```
+{
+        "restaurantName": "De Neve",
+        "menuSections": {
+            "The Pizzeria": [
+                {
+                    "Garlic Chicken Pizza": [
+                        "AWHT",
+                        "AGTN",
+                        "AMLK"
+                    ]
+                },
+                {
+                    "Margherita Pizza": [
+                        "AWHT",
+                        "AGTN",
+                        "V",
+                        "AMLK"
+                    ]
+                },
+                {
+                    "Pepperoni Deluxe Pizza": [
+                        "AWHT",
+                        "AGTN",
+                        "AMLK"
+                    ]
+                }
+            ],
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
