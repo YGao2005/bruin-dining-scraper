@@ -65,7 +65,7 @@ public class MenuController {
 
     @GetMapping("/getmenuformatsbydateandmealperiod")
     public List<RestaurantMenuFormatDTO> getMenuFormatsByDate(@RequestParam LocalDate date, @RequestParam String mealPeriod) {
-        return menuSearchService.getMenuFormatsByDateAndMealPeriod(date, mealPeriod);
+            return menuSearchService.getMenuFormatsByDateAndMealPeriod(date, mealPeriod);
     }
 }
 
