@@ -73,6 +73,7 @@ Some key features:
 * Allows for users to search for all menu items that contain certain words
 * Allows for users to filter menu items depending on dietary restrictions
 * Allows for users to get dates upcoming dates when a certain menu item will be offered
+* Scrapes data automatically at 10PM every day
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -268,7 +269,7 @@ Example of a section of the returned JSON:
 - [x] Add Changelog
 - [x] Fixed bug that prevents dinner menu from being scraped
 - [x] Search function now also returns menu item ID  
-- [ ] Fix scheduler so menus can be scraped daily
+- [x] Fix scheduler so menus can be scraped daily
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
