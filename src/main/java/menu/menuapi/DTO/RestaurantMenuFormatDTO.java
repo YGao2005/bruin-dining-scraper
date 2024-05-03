@@ -11,7 +11,7 @@ public class RestaurantMenuFormatDTO {
     private String restaurantName;
 
     private String mealPeriodName;
-    private Map<String, List<Map<String, List<String>>>> menuSections = new HashMap<>();
+    private Map<String, List<Map<String, Long>>> menuSections = new HashMap<>();
 
     public RestaurantMenuFormatDTO(String restaurantName, String mealPeriodName) {
         this.restaurantName = restaurantName;
@@ -19,10 +19,10 @@ public class RestaurantMenuFormatDTO {
     }
 
     // Method to add a menu item to a specific section with its health restrictions
-    public void addMenuItem(String section, String menuItem, List<String> healthRestrictions) {
+    public void addMenuItem(String section, String menuItem, Long itemID) {
         menuSections.putIfAbsent(section, new ArrayList<>());
-        Map<String, List<String>> item = new HashMap<>();
-        item.put(menuItem, healthRestrictions);
+        Map<String, Long> item = new HashMap<>();
+        item.put(menuItem, itemID);
         menuSections.get(section).add(item);
     }
 
@@ -35,11 +35,11 @@ public class RestaurantMenuFormatDTO {
         this.restaurantName = restaurantName;
     }
 
-    public Map<String, List<Map<String, List<String>>>> getMenuSections() {
+    public Map<String, List<Map<String, Long>>> getMenuSections() {
         return menuSections;
     }
 
-    public void setMenuSections(Map<String, List<Map<String, List<String>>>> menuSections) {
+    public void setMenuSections(Map<String, List<Map<String, Long>>> menuSections) {
         this.menuSections = menuSections;
     }
 

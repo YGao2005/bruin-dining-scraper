@@ -94,17 +94,17 @@ public class MenuSearchService {
             String restaurantName = menuItemInfo.getMenuItem().getRestaurant().getName();
             String sectionName = menuItemInfo.getMenuItem().getSection().getName();
             String menuItemName = menuItemInfo.getMenuItem().getItemName();
-            List<String> healthRestrictions = menuItemInfo.getMenuItem().getHealthRestrictionNames();
+            Long itemID = menuItemInfo.getMenuItem().getId();
 
             switch(restaurantName) {
                 case "De Neve":
-                    deNeveMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    deNeveMenu.addMenuItem(sectionName, menuItemName, itemID);
                     break;
                 case "Bruin Plate":
-                    bPlateMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    bPlateMenu.addMenuItem(sectionName, menuItemName, itemID);
                     break;
                 case "Epicuria":
-                    epicuriaMenu.addMenuItem(sectionName, menuItemName, healthRestrictions);
+                    epicuriaMenu.addMenuItem(sectionName, menuItemName, itemID);
                     break;
             }
         }
