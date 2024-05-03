@@ -182,7 +182,7 @@ Route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?q
 
 Replace `{QUERY}` with the search query.
 
-This call will return all menu items containing the query inside their name. This includes the menu item name, restaurant name, menu item id, and list of health restrictions as depicted below. The search feature is case-insensitive.  
+This call will return all menu items containing the query inside their name. This includes the menu item name, restaurant name, menu item ID, and list of health restrictions as depicted below. The search feature is case-insensitive.  
 
 Example usage: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/search?query=cheese`
 
@@ -221,7 +221,7 @@ Formats in this structure (for 3 restaurants):
           MenuItem:
             {
               MenuItemName,
-              HealthRestrictionsList
+              MenuItemID
             }
         }
     }
@@ -238,26 +238,13 @@ Example of a section of the returned JSON:
         "menuSections": {
             "The Pizzeria": [
                 {
-                    "Garlic Chicken Pizza": [
-                        "AWHT",
-                        "AGTN",
-                        "AMLK"
-                    ]
+                    "Garlic Chicken Pizza": 1609
                 },
                 {
-                    "Margherita Pizza": [
-                        "AWHT",
-                        "AGTN",
-                        "V",
-                        "AMLK"
-                    ]
+                    "Margherita Pizza": 1612
                 },
                 {
-                    "Pepperoni Deluxe Pizza": [
-                        "AWHT",
-                        "AGTN",
-                        "AMLK"
-                    ]
+                    "Pepperoni Deluxe Pizza": 1606
                 }
             ],
 ```
