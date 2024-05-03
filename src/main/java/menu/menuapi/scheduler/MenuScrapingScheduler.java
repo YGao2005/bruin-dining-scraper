@@ -16,7 +16,7 @@ public class MenuScrapingScheduler {
         this.menuScrapingService = menuScrapingService;
     }
 
-    @Scheduled(cron = "0 0 22 * * *") // At midnight every day
+    @Scheduled(cron = "0 0 3 * * *") // At midnight every day
     public void scrapeMenuDataPeriodically() {
         logger.info("Starting scheduled menu scraping...");
 

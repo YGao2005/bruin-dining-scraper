@@ -177,7 +177,7 @@ public class MenuScrapingService {
 
     private void saveMenuItemDTO(MenuItemDTO menuItemDTO, List<String> healthRestrictions) {
         // Check if the MenuItem already exists in the database
-        MenuItem menuItem = menuItemRepository.findByItemName(menuItemDTO.getItemName());
+        MenuItem menuItem = menuItemRepository.findByItemNameAndRestaurant_RestaurantName(menuItemDTO.getItemName(), menuItemDTO.getRestaurantName());
         if (menuItem == null) {
             // If not, create a new MenuItem
             menuItem = new MenuItem(menuItemDTO.getItemName(), restaurantRepository.findByRestaurantName(menuItemDTO.getRestaurantName()), buildListOfHealthRestrictions(healthRestrictions));
