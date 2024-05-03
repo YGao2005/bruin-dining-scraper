@@ -257,6 +257,7 @@ Example of a section of the returned JSON:
 - [x] Fixed bug that prevents dinner menu from being scraped
 - [x] Search function now also returns menu item ID  
 - [x] Fix scheduler so menus can be scraped daily
+- [ ] Add scraping service for Feast
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
