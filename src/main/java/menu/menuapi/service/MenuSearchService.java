@@ -72,14 +72,42 @@ public class MenuSearchService {
 
     public List<MenuItemDTO> getMenuItemByName(String menuItemName) {
         List<MenuItemDTO> menuItemDTOs = new ArrayList<>();
-        MenuItem menuItem = menuItemRepository.findByItemName(menuItemName);
-        List<MenuItemInfo> menuItemInfos = menuItemInfoRepository.findAllByMenuItem(menuItem);
-        for (MenuItemInfo itemInfo : menuItemInfos) {
-            menuItemDTOs.add(new MenuItemDTO(menuItem, itemInfo));
+
+        // Calculate date range
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate nextWeek = LocalDate.now().plusDays(7);
+
+        // Find all menu items with the given name
+        List<MenuItem> menuItems = menuItemRepository.findAllByItemName(menuItemName);
+
+        if (menuItems.isEmpty()) {
+            throw new MenuItemNotFoundException("No menu items found with name: " + menuItemName);
         }
-        // Map MenuItem entity to DTO (Data Transfer Object) to return to the user
+
+        // Process each matching menu item
+        for (MenuItem menuItem : menuItems) {
+            // Find MenuItemInfo entries within the date range
+            List<MenuItemInfo> menuItemInfos = menuItemInfoRepository.findAllByMenuItemAndDateBetween(
+                    menuItem,
+                    yesterday,
+                    nextWeek
+            );
+
+            for (MenuItemInfo itemInfo : menuItemInfos) {
+                menuItemDTOs.add(new MenuItemDTO(menuItem, itemInfo));
+            }
+        }
+
+        if (menuItemDTOs.isEmpty()) {
+            throw new MenuItemNotFoundException(
+                    "No upcoming menu items found with name: " + menuItemName +
+                            " between " + yesterday + " and " + nextWeek
+            );
+        }
+
         return menuItemDTOs;
     }
+
 
     public List<RestaurantMenuFormatDTO> getMenuFormatsByDateAndMealPeriod(LocalDate date, String mealPeriodName) {
         List<RestaurantMenuFormatDTO> restaurantMenuFormatDTOs = new ArrayList<>();
