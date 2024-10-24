@@ -111,10 +111,10 @@ This call will return a list of menu items in a json format (see below) that spe
 3. Link to the nutritional page
 4. One instance of a meal period when it is offered
 5. The restaurant the item is offered at
-6. One instance of a date where the menu item is offered
+6. One instance of a date where the menu item is offered (between the dates of yesterday and the 7 days from today)
 7. A list of the health restrictions of the item
 
-Example of returned json with route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getitembyname?name=Cheese Pizza`
+Example of returned json with route: `https://bruin-menu-scraper-f710fcfa2eb4.herokuapp.com/api/menus/getallitemsbyname?name=Cheese Pizza`
 
 ```
    {
